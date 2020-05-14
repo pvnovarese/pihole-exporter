@@ -1,4 +1,4 @@
-ARG IMAGE=scratch
+ARG IMAGE=alpine
 ARG OS=linux
 ARG ARCH=amd64
 
@@ -17,7 +17,7 @@ RUN upx -f --brute binary
 FROM $IMAGE
 
 LABEL name="pihole-exporter"
-
+HEALTHCHECK CMD wget --spider http://127.0.0.1:9617/metrics || exit 1 
 WORKDIR /root/
 COPY --from=builder /go/src/github.com/eko/pihole-exporter/binary pihole-exporter
 
